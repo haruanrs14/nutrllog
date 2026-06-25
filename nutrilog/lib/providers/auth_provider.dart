@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/usuario_model.dart';
 import '../services/auth_service.dart';
 import '../services/local_storage_service.dart';
@@ -22,12 +21,16 @@ class AuthProvider extends ChangeNotifier {
 
   /// Tenta restaurar sessão salva localmente ao iniciar o app.
   Future<bool> tentarRestaurarSessao() async {
-    final usuario = await _local.carregarSessao();
-    if (usuario != null) {
-      _usuarioAtual = usuario;
-      _status = AuthStatus.autenticado;
-      notifyListeners();
-      return true;
+    try {
+      final usuario = await _local.carregarSessao();
+      if (usuario != null) {
+        _usuarioAtual = usuario;
+        _status = AuthStatus.autenticado;
+        notifyListeners();
+        return true;
+      }
+    } catch (e) {
+      debugPrint('[AuthProvider] Erro ao restaurar sessão: $e');
     }
     return false;
   }
@@ -35,16 +38,14 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> login(String email, String senha) async {
     _setCarregando();
     try {
+      await _local.limparSessao();
       _usuarioAtual = await _authService.login(email, senha);
       await _local.salvarSessao(_usuarioAtual!);
       _status = AuthStatus.autenticado;
       notifyListeners();
       return true;
-    } on FirebaseAuthException catch (e) {
-      _setErro(_authService.mensagemDeErro(e));
-      return false;
     } catch (e) {
-      _setErro('Erro inesperado ao fazer login. Tente novamente.');
+      _setErro(_authService.mensagemDeErro(e));
       return false;
     }
   }
@@ -56,6 +57,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _setCarregando();
     try {
+      await _local.limparSessao();
       _usuarioAtual = await _authService.cadastrar(
         nome: nome,
         email: email,
@@ -65,11 +67,8 @@ class AuthProvider extends ChangeNotifier {
       _status = AuthStatus.autenticado;
       notifyListeners();
       return true;
-    } on FirebaseAuthException catch (e) {
-      _setErro(_authService.mensagemDeErro(e));
-      return false;
     } catch (e) {
-      _setErro('Erro inesperado ao criar a conta. Tente novamente.');
+      _setErro(_authService.mensagemDeErro(e));
       return false;
     }
   }

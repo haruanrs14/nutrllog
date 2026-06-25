@@ -7,8 +7,8 @@ import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/senha_requisitos.dart';
 
-/// Tela de cadastro . Cria nova conta de cliente com validação
-
+/// Tela de cadastro (Tela 03). Cria nova conta de cliente com validação
+/// de senha robusta (maiúscula, número, caractere especial, mínimo 6 dígitos).
 class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
 
@@ -144,7 +144,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   validator: Validadores.senha,
                 ),
 
-                // Requisitos de senha em tempo real
+                /// Exibe os requisitos de senha em tempo real enquanto o usuário digita
                 if (_mostrarRequisitos)
                   SenhaRequisitos(senha: _senhaAtual),
 

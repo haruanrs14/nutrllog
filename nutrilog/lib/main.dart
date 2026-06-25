@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -9,14 +8,6 @@ import 'routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Inicializa o Firebase antes de carregar o app
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    debugPrint("Erro ao inicializar o Firebase: $e");
-  }
-  
   await initializeDateFormatting('pt_BR');
   runApp(const NutriLogApp());
 }
@@ -42,7 +33,6 @@ class NutriLogApp extends StatelessWidget {
             seedColor: const Color(0xFF4080FF),
             brightness: Brightness.dark,
           ),
-        
           chipTheme: ChipThemeData(
             backgroundColor: const Color(0xFF171726),
             selectedColor: const Color(0xFF4080FF),

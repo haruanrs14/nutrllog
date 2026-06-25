@@ -7,7 +7,8 @@ import '../providers/refeicao_provider.dart';
 import '../routes.dart';
 import '../widgets/meal_card.dart';
 
-/// Tela inicial do cliente
+/// Tela inicial do cliente (Tela 04). Mostra boas-vindas, data atual,
+/// refeições do dia e barra de navegação inferior fixa.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -30,20 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onNavTap(int index) {
-    if (index == 1) {
-      // Registrar → abre câmera
-      Navigator.of(context).pushNamed(AppRoutes.registrar);
-      return;
-    }
     setState(() => _tabAtual = index);
-    if (index == 2) {
-      Navigator.of(context).pushNamed(AppRoutes.historico);
-      return;
-    }
-    if (index == 3) {
-      Navigator.of(context).pushNamed(AppRoutes.perfil);
-      return;
-    }
   }
 
   @override
@@ -69,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── Header ────────────────────────────────────────────────
+              /// Cabeçalho com saudação, avatar e botão de sair
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -96,34 +84,41 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  // Avatar de perfil
-                  GestureDetector(
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.perfil),
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: const Color(0xFF4080FF),
-                      backgroundImage: usuario?.fotoPerfil != null
-                          ? NetworkImage(usuario!.fotoPerfil!)
-                          : null,
-                      child: usuario?.fotoPerfil == null
-                          ? Text(
-                              primeiroNome.isNotEmpty
-                                  ? primeiroNome[0].toUpperCase()
-                                  : '?',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ),
-                            )
-                          : null,
-                    ),
+                  CircleAvatar(
+                    radius: 22,
+                    backgroundColor: const Color(0xFF4080FF),
+                    backgroundImage: usuario?.fotoPerfil != null
+                        ? NetworkImage(usuario!.fotoPerfil!)
+                        : null,
+                    child: usuario?.fotoPerfil == null
+                        ? Text(
+                            primeiroNome.isNotEmpty
+                                ? primeiroNome[0].toUpperCase()
+                                : '?',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          )
+                        : null,
+                  ),
+                  const SizedBox(width: 8),
+                  /// Botão de logout: limpa a sessão e retorna à tela de login
+                  IconButton(
+                    icon: Icon(Icons.logout_rounded, color: Colors.grey.shade500, size: 22),
+                    tooltip: 'Sair',
+                    onPressed: () async {
+                      await authProvider.logout();
+                      if (context.mounted) {
+                        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+                      }
+                    },
                   ),
                 ],
               ),
 
-              // ── Data ──────────────────────────────────────────────────
+              /// Data atual formatada em português
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -163,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
 
-              // ── Streak
+              /// Contador de dias consecutivos com registro
               const SizedBox(height: 14),
               Container(
                 padding:
@@ -188,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              // ── Refeições
+              /// Lista de refeições do dia agrupadas por tipo
               const SizedBox(height: 28),
               const Text(
                 'Refeições de hoje',
@@ -219,10 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? 'Registrado · $horario'
                       : 'Pendente · Toque para registrar',
                   registrada: registrada,
-                  onTap: registrada
-                      ? null
-                      : () =>
-                          Navigator.of(context).pushNamed(AppRoutes.registrar),
+                  onTap: null,
                 );
               }),
 

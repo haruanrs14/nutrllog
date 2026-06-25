@@ -1,11 +1,11 @@
-
+/// Representa uma refeição registrada pelo usuário.
 class RefeicaoModel {
   final String id;
   final String userId;
   final TipoRefeicao tipo;
   final String descricao;
   final DateTime dataHora;
-  final String? fotoPath; 
+  final String? fotoPath;
   final double? latitude;
   final double? longitude;
   final String? localizacaoNome;

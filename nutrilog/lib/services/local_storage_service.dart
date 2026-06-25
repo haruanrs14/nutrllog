@@ -3,13 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/usuario_model.dart';
 import '../models/refeicao_model.dart';
 
-
+/// Serviço de armazenamento local usando SharedPreferences.
+/// Guarda sessão do usuário e histórico de refeições localmente,
+/// permitindo que o app funcione sem Firebase configurado.
 class LocalStorageService {
   static const _keyUsuario = 'usuario_logado';
   static const _keyRefeicoes = 'refeicoes';
   static const _keyUsuariosCadastrados = 'usuarios_cadastrados';
-
-  // ─── Sessão do usuário ───────────────────────────────────────────────────
 
   Future<void> salvarSessao(UsuarioModel usuario) async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,8 +29,6 @@ class LocalStorageService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_keyUsuario);
   }
-
-  // ─── Usuários cadastrados (sem Firebase) ────────────────────────────────
 
   Future<Map<String, dynamic>> _carregarUsuarios() async {
     final prefs = await SharedPreferences.getInstance();
@@ -79,8 +77,6 @@ class LocalStorageService {
     }
   }
 
-  // ─── Refeições ──────────────────────────────────────────────────────────
-
   Future<List<RefeicaoModel>> carregarRefeicoes(String userId) async {
     final prefs = await SharedPreferences.getInstance();
     final json = prefs.getString('${_keyRefeicoes}_$userId');
@@ -94,7 +90,7 @@ class LocalStorageService {
   Future<void> salvarRefeicao(RefeicaoModel refeicao) async {
     final prefs = await SharedPreferences.getInstance();
     final refeicoes = await carregarRefeicoes(refeicao.userId);
-    refeicoes.insert(0, refeicao); // mais recente primeiro
+    refeicoes.insert(0, refeicao);
     await prefs.setString(
       '${_keyRefeicoes}_${refeicao.userId}',
       jsonEncode(refeicoes.map((r) => r.toMap()).toList()),
