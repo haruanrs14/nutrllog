@@ -7,8 +7,8 @@ import 'screens/registrar_screen.dart';
 import 'screens/historico_screen.dart';
 import 'screens/perfil_screen.dart';
 
-
-///  Evita strings "mágicas" espalhadas pelo
+/// Centraliza os nomes de rota usados na navegação com rotas nomeadas
+/// (requisito do trabalho). Evita strings "mágicas" espalhadas pelo
 /// código — toda navegação referencia uma constante daqui.
 class AppRoutes {
   static const String splash = '/';

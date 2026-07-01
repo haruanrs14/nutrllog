@@ -6,7 +6,9 @@ import '../providers/auth_provider.dart';
 import '../providers/refeicao_provider.dart';
 import '../routes.dart';
 
-/// Tela de perfil 
+/// Tela de perfil (Tela 08). Exibe dados do usuário, foto de perfil
+/// (pode ser trocada pela câmera ou galeria), estatísticas de refeições
+/// e opção de logout.
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
 
@@ -139,8 +141,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-
-            // ── Foto de perfil 
+            // ── Foto de perfil ─────────────────────────────────────────
             Stack(
               alignment: Alignment.bottomRight,
               children: [
@@ -218,7 +219,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
             ),
 
-            // ── Estatísticas 
+            // ── Estatísticas ───────────────────────────────────────────
             const SizedBox(height: 28),
             Row(
               children: [
@@ -244,7 +245,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ],
             ),
 
-            // ── Informações
+            // ── Informações ───────────────────────────────────────────
             const SizedBox(height: 28),
             _InfoTile(
               icone: Icons.person_rounded,
@@ -264,7 +265,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   : 'Cliente',
             ),
 
-            // ── Sair 
+            // ── Sair ──────────────────────────────────────────────────
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,

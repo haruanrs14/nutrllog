@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/usuario_model.dart';
 import '../models/refeicao_model.dart';
 
-
+/// Serviço de armazenamento local usando SharedPreferences.
+/// Guarda sessão do usuário e histórico de refeições localmente,
+/// permitindo que o app funcione sem Firebase configurado (desenvolvimento).
 class LocalStorageService {
   static const _keyUsuario = 'usuario_logado';
   static const _keyRefeicoes = 'refeicoes';

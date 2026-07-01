@@ -13,7 +13,10 @@ class Validadores {
   }
 
   /// Valida senha com os requisitos do trabalho:
- 
+  /// - Mínimo 6 caracteres
+  /// - Pelo menos uma letra maiúscula
+  /// - Pelo menos um número
+  /// - Pelo menos um caractere especial
   static String? senha(String? valor) {
     if (valor == null || valor.isEmpty) {
       return 'A senha é obrigatória.';

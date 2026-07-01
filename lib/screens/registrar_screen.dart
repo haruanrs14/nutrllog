@@ -8,7 +8,9 @@ import '../providers/auth_provider.dart';
 import '../providers/refeicao_provider.dart';
 import '../widgets/primary_button.dart';
 
-/// Tela registro de refeição .
+/// Tela de registro de refeição (Tela 05). Abre a câmera do dispositivo,
+/// captura a foto, seleciona o tipo de refeição, obtém a localização via GPS
+/// e salva o registro localmente / no Firestore.
 class RegistrarScreen extends StatefulWidget {
   const RegistrarScreen({super.key});
 
@@ -74,7 +76,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
       );
       if (mounted) setState(() => _posicao = pos);
     } catch (_) {
-      // GPS indisponível 
+      // GPS indisponível — continua sem localização
     } finally {
       if (mounted) setState(() => _buscandoLocalizacao = false);
     }
@@ -171,7 +173,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── Foto
+              // ── Foto ──────────────────────────────────────────────────
               GestureDetector(
                 onTap: _tirarFoto,
                 child: Container(
@@ -264,7 +266,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
                 ],
               ),
 
-              // ── Tipo de refeição
+              // ── Tipo de refeição ──────────────────────────────────────
               const SizedBox(height: 24),
               Text(
                 'TIPO DE REFEIÇÃO',
@@ -306,7 +308,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
                 }).toList(),
               ),
 
-              // ── Descrição 
+              // ── Descrição ─────────────────────────────────────────────
               const SizedBox(height: 24),
               Text(
                 'DESCRIÇÃO (OPCIONAL)',
@@ -345,7 +347,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
                 ),
               ),
 
-              // ── Localização 
+              // ── Localização ───────────────────────────────────────────
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -393,7 +395,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
                 ),
               ),
 
-              // ── Botão salvar 
+              // ── Botão salvar ──────────────────────────────────────────
               const SizedBox(height: 28),
               PrimaryButton(
                 texto: 'Salvar refeição',

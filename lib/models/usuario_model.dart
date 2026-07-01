@@ -1,10 +1,13 @@
-
+/// Representa o usuário autenticado no NutriLog.
+///
+/// O app possui dois perfis de acesso (cliente e nutricionista), por isso
+/// guardamos o [tipo] junto com os dados básicos do usuário.
 class UsuarioModel {
   final String uid;
   final String nome;
   final String email;
   final TipoUsuario tipo;
-  final String? fotoPerfil; 
+  final String? fotoPerfil; // caminho local da foto de perfil
 
   UsuarioModel({
     required this.uid,
@@ -27,6 +30,7 @@ class UsuarioModel {
     );
   }
 
+  /// Converte o usuário em um Map para salvar no Firestore ou SharedPreferences.
   Map<String, dynamic> toMap() {
     return {
       'nome': nome,

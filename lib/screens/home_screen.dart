@@ -7,7 +7,8 @@ import '../providers/refeicao_provider.dart';
 import '../routes.dart';
 import '../widgets/meal_card.dart';
 
-/// Tela inicial do cliente
+/// Tela inicial do cliente (Tela 04). Mostra boas-vindas, data atual,
+/// refeições do dia e barra de navegação inferior fixa.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -163,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
 
-              // ── Streak
+              // ── Streak ────────────────────────────────────────────────
               const SizedBox(height: 14),
               Container(
                 padding:
@@ -188,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              // ── Refeições
+              // ── Refeições ─────────────────────────────────────────────
               const SizedBox(height: 28),
               const Text(
                 'Refeições de hoje',

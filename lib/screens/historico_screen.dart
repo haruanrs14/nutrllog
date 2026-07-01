@@ -7,7 +7,8 @@ import '../providers/auth_provider.dart';
 import '../providers/refeicao_provider.dart';
 import '../routes.dart';
 
-/// Tela de histórico 
+/// Tela de histórico (Tela 06). Lista todas as refeições já registradas,
+/// agrupadas por dia, com foto em miniatura, tipo, horário e localização.
 class HistoricoScreen extends StatelessWidget {
   const HistoricoScreen({super.key});
 
@@ -141,7 +142,7 @@ class _CartaoHistorico extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Miniatura da foto
+          // Miniatura da foto ou emoji
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: refeicao.fotoPath != null
