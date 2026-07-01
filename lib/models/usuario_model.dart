@@ -7,7 +7,11 @@ class UsuarioModel {
   final String nome;
   final String email;
   final TipoUsuario tipo;
+<<<<<<< HEAD:lib/models/usuario_model.dart
   final String? fotoPerfil; // caminho local da foto de perfil
+=======
+  final String? fotoPerfil;
+>>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/models/usuario_model.dart
 
   UsuarioModel({
     required this.uid,

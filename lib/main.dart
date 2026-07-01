@@ -13,6 +13,7 @@ import 'routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+<<<<<<< HEAD:lib/main.dart
 
   
   try {
@@ -23,6 +24,8 @@ Future<void> main() async {
   }
 
  
+=======
+>>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
   await initializeDateFormatting('pt_BR');
 
   runApp(const NutriLogApp());
@@ -49,7 +52,10 @@ class NutriLogApp extends StatelessWidget {
             seedColor: const Color(0xFF4080FF),
             brightness: Brightness.dark,
           ),
+<<<<<<< HEAD:lib/main.dart
           // Chip theme para a seleção de tipo de refeição
+=======
+>>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
           chipTheme: ChipThemeData(
             backgroundColor: const Color(0xFF171726),
             selectedColor: const Color(0xFF4080FF),

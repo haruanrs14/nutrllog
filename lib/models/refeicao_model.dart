@@ -5,7 +5,11 @@ class RefeicaoModel {
   final TipoRefeicao tipo;
   final String descricao;
   final DateTime dataHora;
+<<<<<<< HEAD:lib/models/refeicao_model.dart
   final String? fotoPath; // caminho local da foto
+=======
+  final String? fotoPath;
+>>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/models/refeicao_model.dart
   final double? latitude;
   final double? longitude;
   final String? localizacaoNome;

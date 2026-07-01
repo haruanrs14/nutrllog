@@ -144,7 +144,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   validator: Validadores.senha,
                 ),
 
-                // Requisitos de senha em tempo real
+                /// Exibe os requisitos de senha em tempo real enquanto o usuário digita
                 if (_mostrarRequisitos)
                   SenhaRequisitos(senha: _senhaAtual),
 
