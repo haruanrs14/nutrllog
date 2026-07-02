@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../models/refeicao_model.dart';
 import '../providers/auth_provider.dart';
 import '../providers/refeicao_provider.dart';
 import '../routes.dart';
-import '../widgets/meal_card.dart';
 
 /// Tela inicial do cliente (Tela 04). Mostra boas-vindas, data atual,
 /// refeições do dia e barra de navegação inferior fixa.
@@ -157,12 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-
-<<<<<<< HEAD:lib/screens/home_screen.dart
-              // ── Streak ────────────────────────────────────────────────
-=======
               /// Contador de dias consecutivos com registro
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/screens/home_screen.dart
               const SizedBox(height: 14),
               Container(
                 padding:
@@ -186,12 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-
-<<<<<<< HEAD:lib/screens/home_screen.dart
-              // ── Refeições ─────────────────────────────────────────────
-=======
               /// Lista de refeições do dia agrupadas por tipo
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/screens/home_screen.dart
               const SizedBox(height: 28),
               const Text(
                 'Refeições de hoje',

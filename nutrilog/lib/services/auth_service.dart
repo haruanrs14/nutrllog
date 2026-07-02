@@ -12,7 +12,7 @@ class AuthService {
     final usuario = await _local.loginLocal(email.trim(), senha);
     if (usuario != null) return usuario;
 
-    throw _AuthException(
+    throw const _AuthException(
       code: 'wrong-password',
       message: 'E-mail ou senha incorretos.',
     );
@@ -25,7 +25,7 @@ class AuthService {
   }) async {
     final jaExiste = await _local.emailJaCadastrado(email.trim());
     if (jaExiste) {
-      throw _AuthException(
+      throw const _AuthException(
         code: 'email-already-in-use',
         message: 'Esse e-mail já está cadastrado.',
       );

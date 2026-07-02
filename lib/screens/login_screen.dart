@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Logo
                 Row(
                   children: [
                     Container(

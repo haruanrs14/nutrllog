@@ -13,19 +13,23 @@ import 'routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-<<<<<<< HEAD:lib/main.dart
 
-  
+  // Tenta inicializar o Firebase se estiver configurado.
+  // Caso contrário, o app usa armazenamento local como fallback.
   try {
-
+    // Para ativar o Firebase: descomente as linhas abaixo e gere o
+    // firebase_options.dart com: flutterfire configure
+    //
+    // import 'package:firebase_core/firebase_core.dart';
+    // import 'firebase_options.dart';
+    // await Firebase.initializeApp(
+    //   options: DefaultFirebaseOptions.currentPlatform,
     // );
   } catch (_) {
     // Firebase não configurado — usa fallback local.
   }
 
- 
-=======
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
+  // Necessário para o DateFormat em português (usado na Home).
   await initializeDateFormatting('pt_BR');
 
   runApp(const NutriLogApp());
@@ -52,10 +56,7 @@ class NutriLogApp extends StatelessWidget {
             seedColor: const Color(0xFF4080FF),
             brightness: Brightness.dark,
           ),
-<<<<<<< HEAD:lib/main.dart
           // Chip theme para a seleção de tipo de refeição
-=======
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
           chipTheme: ChipThemeData(
             backgroundColor: const Color(0xFF171726),
             selectedColor: const Color(0xFF4080FF),
