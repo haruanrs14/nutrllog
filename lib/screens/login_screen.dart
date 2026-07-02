@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/usuario_model.dart';
 import '../providers/auth_provider.dart';
 import '../routes.dart';
 import '../utils/validadores.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 
-/// Tela de login (Tela 02). Permite autenticação com e-mail e senha
-/// com validação de formato de e-mail e requisitos de senha.
+/// Tela de login unificada (Tela 02).
+/// Após autenticação, redireciona automaticamente:
+/// - nutricionista@gmail.com / Nutri123@ → painel do nutricionista
+/// - qualquer cliente cadastrado → home do cliente
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -35,9 +38,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final sucesso = await authProvider.login(email, senha);
 
-    if (sucesso && mounted) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.home);
-    } else if (mounted && authProvider.mensagemErro != null) {
+    if (!mounted) return;
+
+    if (sucesso) {
+      final tipo = authProvider.usuarioAtual?.tipo;
+      Navigator.of(context).pushReplacementNamed(
+        tipo == TipoUsuario.nutricionista
+            ? AppRoutes.nutriHome
+            : AppRoutes.home,
+      );
+    } else if (authProvider.mensagemErro != null) {
       _mostrarErro(authProvider.mensagemErro!);
     }
   }
@@ -68,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // ── Logo ──────────────────────────────────────────────────
                 Row(
                   children: [
                     Container(
@@ -99,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 44),
                 const Text(
                   'Bem-vindo de volta',
@@ -176,6 +188,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+
+                // ── Dica de acesso nutricionista ──────────────────────────
+                const SizedBox(height: 40),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF171726),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: const Color(0xFF22223A)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Text('🩺', style: TextStyle(fontSize: 16)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Nutricionista? Use suas credenciais profissionais para acessar o painel admin.',
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 11,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

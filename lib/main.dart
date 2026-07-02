@@ -4,30 +4,14 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'providers/auth_provider.dart';
 import 'providers/refeicao_provider.dart';
+import 'providers/nutri_provider.dart';
 import 'routes.dart';
 
-// Nota: Firebase.initializeApp() é chamado apenas quando o arquivo
-// firebase_options.dart estiver presente (gerado pelo FlutterFire CLI).
-// Enquanto não estiver configurado, o app funciona com armazenamento local
-// via SharedPreferences.
-
+// user: Nutricionista@gmail.com
+// senha: Nutri123@
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-<<<<<<< HEAD:lib/main.dart
-
-  
-  try {
-
-    // );
-  } catch (_) {
-    // Firebase não configurado — usa fallback local.
-  }
-
- 
-=======
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
   await initializeDateFormatting('pt_BR');
-
   runApp(const NutriLogApp());
 }
 
@@ -40,6 +24,8 @@ class NutriLogApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => RefeicaoProvider()),
+        // FIX: NutriProvider estava ausente do MultiProvider
+        ChangeNotifierProvider(create: (_) => NutriProvider()),
       ],
       child: MaterialApp(
         title: 'NutriLog',
@@ -52,10 +38,6 @@ class NutriLogApp extends StatelessWidget {
             seedColor: const Color(0xFF4080FF),
             brightness: Brightness.dark,
           ),
-<<<<<<< HEAD:lib/main.dart
-          // Chip theme para a seleção de tipo de refeição
-=======
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/main.dart
           chipTheme: ChipThemeData(
             backgroundColor: const Color(0xFF171726),
             selectedColor: const Color(0xFF4080FF),

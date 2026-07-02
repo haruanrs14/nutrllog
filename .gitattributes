@@ -1,0 +1,43 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# .gitattributes — garante 100% Dart no GitHub linguist
+# Todos os arquivos de plataforma e gerados são marcados como vendored,
+# então o GitHub não os conta nas estatísticas de linguagem.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Dart é a linguagem principal — forçar detecção
+*.dart linguist-language=Dart
+*.dart linguist-detectable=true
+
+# Android (Kotlin/Java/Gradle/XML)
+android/**           linguist-vendored
+*.kt                 linguist-vendored
+*.java               linguist-vendored
+*.gradle             linguist-vendored
+*.gradle.kts         linguist-vendored
+gradlew              linguist-vendored
+gradlew.bat          linguist-vendored
+
+# iOS / macOS (Swift / Objective-C / Ruby)
+ios/**               linguist-vendored
+macos/**             linguist-vendored
+*.swift              linguist-vendored
+*.m                  linguist-vendored
+*.h                  linguist-vendored
+Podfile              linguist-vendored
+Podfile.lock         linguist-vendored
+
+# Linux / Windows / Web (C++ / CMake / HTML / JS)
+linux/**             linguist-vendored
+windows/**           linguist-vendored
+web/**               linguist-vendored
+*.cpp                linguist-vendored
+*.cc                 linguist-vendored
+*.c                  linguist-vendored
+CMakeLists.txt       linguist-vendored
+*.html               linguist-vendored
+*.css                linguist-vendored
+*.js                 linguist-vendored
+
+# Arquivos gerados / configuração
+*.g.dart             linguist-generated
+*.freezed.dart       linguist-generated

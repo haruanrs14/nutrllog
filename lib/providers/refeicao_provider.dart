@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/refeicao_model.dart';
+import '../models/plano_alimentar_model.dart';
 import '../services/local_storage_service.dart';
 
 /// Gerencia o estado das refeições do usuário atual.
@@ -8,9 +9,33 @@ class RefeicaoProvider extends ChangeNotifier {
 
   List<RefeicaoModel> _refeicoes = [];
   bool _carregando = false;
+  PlanoAlimentarModel? _plano;
 
   List<RefeicaoModel> get refeicoes => _refeicoes;
   bool get carregando => _carregando;
+
+  /// Plano alimentar (recomendações do nutricionista) do usuário atual.
+  PlanoAlimentarModel? get plano => _plano;
+
+  /// Retorna a recomendação do nutricionista para um tipo de refeição.
+  String? recomendacaoPara(TipoRefeicao tipo) {
+    switch (tipo) {
+      case TipoRefeicao.cafe:
+        return _plano?.cafe;
+      case TipoRefeicao.almoco:
+        return _plano?.almoco;
+      case TipoRefeicao.lanche:
+        return _plano?.lanche;
+      case TipoRefeicao.jantar:
+        return _plano?.jantar;
+    }
+  }
+
+  /// Carrega o plano alimentar definido pelo nutricionista para o usuário.
+  Future<void> carregarPlano(String userId) async {
+    _plano = await _local.carregarPlanoAlimentar(userId);
+    notifyListeners();
+  }
 
   /// Retorna as refeições do dia atual.
   List<RefeicaoModel> get refeicoesDeHoje {
@@ -48,6 +73,7 @@ class RefeicaoProvider extends ChangeNotifier {
     _carregando = true;
     notifyListeners();
     _refeicoes = await _local.carregarRefeicoes(userId);
+    _plano = await _local.carregarPlanoAlimentar(userId);
     _carregando = false;
     notifyListeners();
   }

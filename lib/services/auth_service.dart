@@ -1,50 +1,33 @@
-import 'package:flutter/foundation.dart';
 import '../models/usuario_model.dart';
 import 'local_storage_service.dart';
 
-// Importações do Firebase com guard condicional.
-// O app funciona inteiramente sem Firebase quando não configurado.
-bool _firebaseDisponivel = false;
-
-// Lazy references — só acessadas dentro de try/catch
-dynamic get _firebaseAuth {
-  try {
-    // ignore: avoid_dynamic_calls
-    final fa = _getFirebaseAuth();
-    return fa;
-  } catch (_) {
-    return null;
-  }
-}
-
-// Usamos dynamic para evitar import estático que trava sem Firebase
-dynamic _getFirebaseAuth() {
-  throw UnimplementedError('Firebase não importado estaticamente.');
-}
-
 /// Camada de serviço responsável por autenticação.
-/// Tenta usar Firebase quando disponível; caso contrário, usa
-/// armazenamento local via SharedPreferences (modo de desenvolvimento).
+/// Usa armazenamento local via SharedPreferences.
+/// O nutricionista possui conta fixa hardcoded — sem necessidade de cadastro.
 class AuthService {
   final LocalStorageService _local = LocalStorageService();
 
-  /// Testa se o Firebase está inicializado e acessível.
-  bool get _fbDisponivel {
-    try {
-      // Se firebase_core não foi inicializado, isso lança.
-      // Usamos uma abordagem dinâmica para não depender de import estático.
-      return _firebaseDisponivel;
-    } catch (_) {
-      return false;
-    }
-  }
+  // ── Conta fixa do nutricionista (admin) ─────────────────────────────────
+  static const String _emailNutri = 'nutricionista@gmail.com';
+  static const String _senhaNutri = 'Nutri123@';
 
   Future<UsuarioModel> login(String email, String senha) async {
-    // Sempre tenta fallback local — Firebase não está configurado em dev
-    final usuario = await _local.loginLocal(email.trim(), senha);
+    final emailLower = email.trim().toLowerCase();
+
+    // Verifica primeiro se é o acesso do nutricionista
+    if (emailLower == _emailNutri && senha == _senhaNutri) {
+      return UsuarioModel(
+        uid: 'nutri_admin',
+        nome: 'Nutricionista',
+        email: emailLower,
+        tipo: TipoUsuario.nutricionista,
+      );
+    }
+
+    // Verifica usuários clientes cadastrados localmente
+    final usuario = await _local.loginLocal(emailLower, senha);
     if (usuario != null) return usuario;
 
-    // Usuário não encontrado localmente
     throw _AuthException(
       code: 'wrong-password',
       message: 'E-mail ou senha incorretos.',
@@ -56,25 +39,36 @@ class AuthService {
     required String email,
     required String senha,
   }) async {
-    final jaExiste = await _local.emailJaCadastrado(email.trim());
+    final emailLower = email.trim().toLowerCase();
+
+    // Impede cadastro com o e-mail reservado ao nutricionista
+    if (emailLower == _emailNutri) {
+      throw _AuthException(
+        code: 'email-already-in-use',
+        message: 'Esse e-mail já está cadastrado.',
+      );
+    }
+
+    final jaExiste = await _local.emailJaCadastrado(emailLower);
     if (jaExiste) {
       throw _AuthException(
         code: 'email-already-in-use',
         message: 'Esse e-mail já está cadastrado.',
       );
     }
+
     await _local.cadastrarUsuarioLocal(
       nome: nome.trim(),
-      email: email.trim(),
+      email: emailLower,
       senha: senha,
     );
-    final usuario = await _local.loginLocal(email.trim(), senha);
+
+    final usuario = await _local.loginLocal(emailLower, senha);
     return usuario!;
   }
 
   Future<void> logout() async {
-    // Sem Firebase ativo, não há nada a fazer aqui.
-    // A sessão é limpa pelo LocalStorageService.
+    // A sessão é gerenciada pelo LocalStorageService.
   }
 
   String mensagemDeErro(dynamic erro) {
@@ -99,7 +93,7 @@ class AuthService {
   }
 }
 
-/// Exceção de autenticação local (substitui FirebaseAuthException em dev).
+/// Exceção de autenticação local.
 class _AuthException implements Exception {
   final String code;
   final String? message;

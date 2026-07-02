@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../models/usuario_model.dart';
 import '../routes.dart';
 
-/// Tela de abertura (Tela 01). Verifica sessão salva e redireciona
-/// automaticamente para Home (se logado) ou Login (se não logado).
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -21,24 +20,36 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+        vsync: this, duration: const Duration(milliseconds: 800));
     _fade = CurvedAnimation(parent: _ctrl, curve: Curves.easeIn);
     _ctrl.forward();
     _verificarAutenticacao();
   }
 
   Future<void> _verificarAutenticacao() async {
-    await Future.delayed(const Duration(milliseconds: 1800));
+    await Future.delayed(const Duration(milliseconds: 1600));
     if (!mounted) return;
 
-    final authProvider = context.read<AuthProvider>();
-    final temSessao = await authProvider.tentarRestaurarSessao();
+    bool temSessao = false;
+    bool ehNutri = false;
+
+    try {
+      // FIX: timeout de 3s para não travar se SharedPreferences demorar
+      temSessao = await context
+          .read<AuthProvider>()
+          .tentarRestaurarSessao()
+          .timeout(const Duration(seconds: 3));
+      ehNutri = context.read<AuthProvider>().usuarioAtual?.tipo ==
+          TipoUsuario.nutricionista;
+    } catch (_) {
+      temSessao = false;
+    }
 
     if (!mounted) return;
     Navigator.of(context).pushReplacementNamed(
-      temSessao ? AppRoutes.home : AppRoutes.login,
+      temSessao
+          ? (ehNutri ? AppRoutes.nutriHome : AppRoutes.home)
+          : AppRoutes.login,
     );
   }
 
@@ -87,9 +98,8 @@ class _SplashScreenState extends State<SplashScreen>
                   children: [
                     TextSpan(text: 'Nutri'),
                     TextSpan(
-                      text: 'Log',
-                      style: TextStyle(color: Color(0xFF4080FF)),
-                    ),
+                        text: 'Log',
+                        style: TextStyle(color: Color(0xFF4080FF))),
                   ],
                 ),
               ),
@@ -104,9 +114,7 @@ class _SplashScreenState extends State<SplashScreen>
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(
-                  color: Color(0xFF4080FF),
-                  strokeWidth: 2.5,
-                ),
+                    color: Color(0xFF4080FF), strokeWidth: 2.5),
               ),
             ],
           ),

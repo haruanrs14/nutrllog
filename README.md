@@ -1,163 +1,121 @@
 # 🥗 NutriLog
 
-Aplicativo de acompanhamento alimentar que conecta **clientes** e **nutricionistas**. O cliente registra suas refeições do dia a dia (com foto, descrição, horário e localização via GPS), e o nutricionista acompanha esses registros em tempo real, comenta e monta planos alimentares personalizados.
+App de acompanhamento alimentar conectando **clientes** e **nutricionistas**.
 
-Projeto desenvolvido como trabalho final da disciplina de **Desenvolvimento para Dispositivos Móveis**, do curso de Análise e Desenvolvimento de Sistemas — **IFSC Campus Tubarão**.
+**IFSC Campus Tubarão · ADS — Desenvolvimento para Dispositivos Móveis**
 
-## Integrantes
+**Integrantes:** Haruan Rechia da Silva · Gabriel Gomes de Campos · Raul Nandi De Pieri
 
-- Haruan Rechia da Silva
-- Gabriel Gomes de Campos
-- Raul Nandi De Pieri
+---
 
-## Tecnologias utilizadas
+## Acesso
 
-- **Flutter / Dart** — framework principal, multiplataforma (Android/iOS)
-- **Provider** — gerenciamento de estado (AuthProvider + RefeicaoProvider)
-- **Firebase Authentication** — autenticação de usuários (e-mail/senha)
-- **Cloud Firestore** — banco de dados em tempo real
-- **Firebase Storage** — armazenamento das fotos das refeições
-- **SharedPreferences** — persistência local (sessão e refeições sem Firebase)
-- **image_picker** — acesso à câmera e galeria do dispositivo
-- **geolocator** — GPS para captura automática da localização nas refeições
-- **intl** — formatação de data em português (pt_BR)
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Nutricionista (admin) | `nutricionista@gmail.com` | `Nutri123@` |
+| Cliente | Cadastre-se no app | Sua senha |
 
-## Estrutura do projeto
+**Requisito de senha:** mínimo 6 caracteres, letra maiúscula, número e caractere especial (ex: `Nutri@2026`)
 
-```
-lib/
-├── main.dart                    # Ponto de entrada, inicializa Providers
-├── routes.dart                  # Rotas nomeadas centralizadas (AppRoutes)
-├── models/
-│   ├── usuario_model.dart       # Modelo do usuário (cliente/nutricionista)
-│   └── refeicao_model.dart      # Modelo de refeição + enum TipoRefeicao
-├── providers/
-│   ├── auth_provider.dart       # Estado de autenticação (sessão, login, logout)
-│   └── refeicao_provider.dart   # Estado das refeições (streak, filtros por dia)
-├── services/
-│   ├── auth_service.dart        # Firebase Auth + fallback local
-│   └── local_storage_service.dart  # SharedPreferences (sessão + refeições)
-├── screens/
-│   ├── splash_screen.dart       # Tela de abertura com restauração de sessão
-│   ├── login_screen.dart        # Login com validação de e-mail e senha
-│   ├── cadastro_screen.dart     # Cadastro com requisitos de senha em tempo real
-│   ├── home_screen.dart         # Home: boas-vindas, data, refeições do dia
-│   ├── registrar_screen.dart    # Registro: câmera, tipo, descrição, GPS
-│   ├── historico_screen.dart    # Histórico agrupado por dia com miniaturas
-│   └── perfil_screen.dart       # Perfil: foto, estatísticas, dados, logout
-├── widgets/
-│   ├── custom_text_field.dart   # Campo de texto com suporte a Form/validator
-│   ├── primary_button.dart      # Botão principal com estado de loading
-│   ├── meal_card.dart           # Card de refeição reutilizável
-│   └── senha_requisitos.dart    # Indicador visual dos requisitos de senha
-└── utils/
-    └── validadores.dart         # Validações: e-mail, senha, nome, confirmação
-```
+---
 
-## Validação de senha
-
-A senha deve atender todos os requisitos abaixo (exibidos em tempo real na tela de cadastro):
-
-- ✅ Mínimo 6 caracteres
-- ✅ Pelo menos uma letra maiúscula
-- ✅ Pelo menos um número
-- ✅ Pelo menos um caractere especial (ex: `@`, `!`, `#`, `$`)
-
-Exemplo de senha válida: `Nutri@2026`
-
-## Requisitos do professor atendidos
-
-| Requisito | Como é atendido |
-|---|---|
-| Telas e navegação com rotas nomeadas | 7 rotas nomeadas em `AppRoutes`: splash, login, cadastro, home, registrar, historico, perfil |
-| Gerenciamento de estado | `AuthProvider` (sessão) + `RefeicaoProvider` (refeições) com Provider |
-| Autenticação | Firebase Auth com e-mail/senha + fallback local via SharedPreferences |
-| Armazenamento de dados | Cloud Firestore (estruturado) + SharedPreferences (local) + Firebase Storage (fotos) |
-| Uso de sensor (câmera) | `image_picker` na tela de registro para fotografar refeições |
-| Uso de sensor (GPS) | `geolocator` captura automaticamente a localização ao registrar |
-| Widgets próprios | `CustomTextField`, `PrimaryButton`, `MealCard`, `SenhaRequisitos` |
-| Organização do projeto | Separação em screens, widgets, models, providers, services, utils |
-| Criatividade e extensão | Painel de streak, requisitos de senha em tempo real, fallback offline |
-
-## Como rodar o projeto
-
-### 1. Pré-requisitos
-
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) instalado
-- VS Code com extensão Flutter instalada
-
-### 2. Clonar e instalar dependências
+## Como rodar
 
 ```bash
-git clone <url-do-repositorio>
-cd nutrilog
 flutter pub get
-```
-
-### 3. Rodar sem Firebase (modo desenvolvimento)
-
-O app funciona imediatamente sem configurar o Firebase, usando armazenamento local:
-
-```bash
 flutter run
 ```
 
-Os dados (usuários e refeições) serão salvos no dispositivo via SharedPreferences.
+---
 
-### 4. Ativar Firebase (produção)
+## Funcionalidades
 
-1. Instale o FlutterFire CLI: `dart pub global activate flutterfire_cli`
-2. Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
-3. Ative **Authentication → E-mail/senha** e **Cloud Firestore**
-4. Na raiz do projeto: `flutterfire configure`
-5. Descomente as linhas do Firebase em `lib/main.dart`
+### Cliente
+- Splash com restauração automática de sessão (sem travar)
+- Login com validação de e-mail e senha
+- Cadastro com requisitos de senha em tempo real
+- **Home:** boas-vindas, data atual, streak de dias e refeições do dia
+  - Toque no `+` de cada refeição pendente → abre o Registrar com tipo pré-selecionado
+  - Toque numa refeição já registrada → abre detalhe com comentário do nutricionista
+- **Registrar:** câmera ou galeria + tipo de refeição + GPS + descrição
+- **Histórico:** refeições agrupadas por dia, com foto miniatura e comentário do nutricionista
+- **Perfil:** foto (câmera/galeria), estatísticas (total, streak, dias ativos), logout
 
-### 5. Permissões Android
+### Nutricionista (Admin)
+- Dashboard com métricas: total de clientes, refeições hoje, pendentes hoje
+- Atividade recente: últimas refeições de todos os clientes em tempo real
+- Lista de clientes com busca e indicador de status (ativo hoje / pendente)
+- Perfil de cada cliente: histórico completo de refeições
+- Detalhe de refeição: foto, dados, campo de feedback/comentário
+- Plano alimentar: editor por refeição do dia para cada cliente
+- Avisos: log de atividade recente
 
-No arquivo `android/app/src/main/AndroidManifest.xml`, adicione:
+---
+
+## Estrutura
+
+```
+lib/
+├── main.dart
+├── routes.dart
+├── models/
+│   ├── usuario_model.dart
+│   ├── refeicao_model.dart
+│   └── plano_alimentar_model.dart
+├── providers/
+│   ├── auth_provider.dart
+│   ├── refeicao_provider.dart
+│   └── nutri_provider.dart
+├── services/
+│   ├── auth_service.dart
+│   └── local_storage_service.dart
+├── screens/
+│   ├── splash_screen.dart
+│   ├── login_screen.dart
+│   ├── cadastro_screen.dart
+│   ├── home_screen.dart
+│   ├── registrar_screen.dart
+│   ├── historico_screen.dart
+│   ├── perfil_screen.dart
+│   └── nutricionista/
+│       ├── nutri_scaffold.dart
+│       ├── nutri_dashboard_screen.dart
+│       ├── nutri_clientes_screen.dart
+│       ├── nutri_cliente_perfil_screen.dart
+│       ├── nutri_refeicao_detalhe_screen.dart
+│       ├── nutri_plano_alimentar_screen.dart
+│       ├── nutri_avisos_screen.dart
+│       └── nutri_perfil_screen.dart
+├── widgets/
+│   ├── custom_text_field.dart
+│   ├── primary_button.dart
+│   ├── meal_card.dart
+│   └── senha_requisitos.dart
+└── utils/
+    └── validadores.dart
+```
+
+## Tecnologias
+
+- **Flutter / Dart** · **Provider** (AuthProvider + RefeicaoProvider + NutriProvider)
+- **SharedPreferences** — persistência local (sessão + refeições + planos)
+- **image_picker** — câmera e galeria · **geolocator** — GPS · **intl** — datas pt_BR
+
+## Permissões Android (AndroidManifest.xml)
 
 ```xml
-<!-- Câmera -->
 <uses-permission android:name="android.permission.CAMERA" />
-<!-- GPS -->
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 
-### 6. Permissões iOS
-
-No arquivo `ios/Runner/Info.plist`, adicione:
+## Permissões iOS (Info.plist)
 
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>O NutriLog precisa da câmera para fotografar suas refeições.</string>
 <key>NSPhotoLibraryUsageDescription</key>
-<string>O NutriLog acessa a galeria para que você escolha uma foto de perfil.</string>
+<string>O NutriLog acessa a galeria para foto de perfil.</string>
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>O NutriLog usa sua localização para registrar onde cada refeição foi feita.</string>
+<string>O NutriLog registra sua localização ao salvar refeições.</string>
 ```
-
-## Status do desenvolvimento
-
-- [x] Splash screen com restauração automática de sessão
-- [x] Tela de Login com validação de e-mail e senha
-- [x] Tela de Cadastro com requisitos de senha em tempo real
-- [x] Tela Home com boas-vindas, data, refeições do dia e streak
-- [x] Barra de navegação inferior fixa com 4 botões
-- [x] Tela de Registro com câmera, seleção de tipo, GPS e descrição
-- [x] Tela de Histórico agrupado por dia com miniatura das fotos
-- [x] Tela de Perfil com foto de perfil, estatísticas e logout
-- [x] Armazenamento local via SharedPreferences (sem Firebase)
-- [x] Firebase Auth + Firestore (com fallback local)
-- [ ] Painel do nutricionista (próxima etapa)
-- [ ] Comentários do nutricionista nas refeições
-- [ ] Editor de Plano Alimentar
-- [ ] Notificações em tempo real
-
-## Etapas de entrega
-
-| Etapa | Data | Status |
-|---|---|---|
-| 1ª etapa | 18/06/2026 | ✅ Concluída — ideia, protótipo e repositório |
-| 2ª etapa | 25/06/2026 | ✅ Concluída — login, cadastro, home, histórico, perfil, câmera e GPS |
-| 3ª etapa (final) | 02/07/2026 | 🔄 Em andamento |

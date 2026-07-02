@@ -1,17 +1,12 @@
 /// Representa o usuário autenticado no NutriLog.
 ///
-/// O app possui dois perfis de acesso (cliente e nutricionista), por isso
-/// guardamos o [tipo] junto com os dados básicos do usuário.
+/// O app possui dois perfis de acesso (cliente e nutricionista).
 class UsuarioModel {
   final String uid;
   final String nome;
   final String email;
   final TipoUsuario tipo;
-<<<<<<< HEAD:lib/models/usuario_model.dart
-  final String? fotoPerfil; // caminho local da foto de perfil
-=======
   final String? fotoPerfil;
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/models/usuario_model.dart
 
   UsuarioModel({
     required this.uid,
@@ -21,7 +16,10 @@ class UsuarioModel {
     this.fotoPerfil,
   });
 
-  /// Cria um [UsuarioModel] a partir de um Map vindo do Firestore ou SharedPreferences.
+  String get primeiroNome => nome.split(' ').first;
+
+  bool get ehNutricionista => tipo == TipoUsuario.nutricionista;
+
   factory UsuarioModel.fromMap(Map<String, dynamic> map, String uid) {
     return UsuarioModel(
       uid: uid,
@@ -34,7 +32,6 @@ class UsuarioModel {
     );
   }
 
-  /// Converte o usuário em um Map para salvar no Firestore ou SharedPreferences.
   Map<String, dynamic> toMap() {
     return {
       'nome': nome,

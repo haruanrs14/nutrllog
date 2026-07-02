@@ -5,14 +5,11 @@ class RefeicaoModel {
   final TipoRefeicao tipo;
   final String descricao;
   final DateTime dataHora;
-<<<<<<< HEAD:lib/models/refeicao_model.dart
-  final String? fotoPath; // caminho local da foto
-=======
   final String? fotoPath;
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/models/refeicao_model.dart
   final double? latitude;
   final double? longitude;
   final String? localizacaoNome;
+  final String? comentarioNutricionista;
 
   RefeicaoModel({
     required this.id,
@@ -24,7 +21,12 @@ class RefeicaoModel {
     this.latitude,
     this.longitude,
     this.localizacaoNome,
+    this.comentarioNutricionista,
   });
+
+  bool get temComentario =>
+      comentarioNutricionista != null &&
+      comentarioNutricionista!.trim().isNotEmpty;
 
   factory RefeicaoModel.fromMap(Map<String, dynamic> map) {
     return RefeicaoModel(
@@ -40,6 +42,7 @@ class RefeicaoModel {
       latitude: (map['latitude'] as num?)?.toDouble(),
       longitude: (map['longitude'] as num?)?.toDouble(),
       localizacaoNome: map['localizacaoNome'] as String?,
+      comentarioNutricionista: map['comentarioNutricionista'] as String?,
     );
   }
 
@@ -54,7 +57,27 @@ class RefeicaoModel {
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (localizacaoNome != null) 'localizacaoNome': localizacaoNome,
+      if (comentarioNutricionista != null)
+        'comentarioNutricionista': comentarioNutricionista,
     };
+  }
+
+  RefeicaoModel copyWith({
+    String? comentarioNutricionista,
+  }) {
+    return RefeicaoModel(
+      id: id,
+      userId: userId,
+      tipo: tipo,
+      descricao: descricao,
+      dataHora: dataHora,
+      fotoPath: fotoPath,
+      latitude: latitude,
+      longitude: longitude,
+      localizacaoNome: localizacaoNome,
+      comentarioNutricionista:
+          comentarioNutricionista ?? this.comentarioNutricionista,
+    );
   }
 }
 

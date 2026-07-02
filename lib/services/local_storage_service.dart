@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/usuario_model.dart';
 import '../models/refeicao_model.dart';
+import '../models/plano_alimentar_model.dart';
 
 /// Serviço de armazenamento local usando SharedPreferences.
-/// Guarda sessão do usuário e histórico de refeições localmente,
-<<<<<<< HEAD:lib/services/local_storage_service.dart
-/// permitindo que o app funcione sem Firebase configurado (desenvolvimento).
-=======
-/// permitindo que o app funcione sem Firebase configurado.
->>>>>>> cbf2329e27b38bd5df4a57120e5f326e5f7666a8:nutrilog/lib/services/local_storage_service.dart
+/// Guarda sessão do usuário, histórico de refeições, planos alimentares
+/// e comentários do nutricionista — sem necessitar de Firebase configurado.
 class LocalStorageService {
   static const _keyUsuario = 'usuario_logado';
   static const _keyRefeicoes = 'refeicoes';
   static const _keyUsuariosCadastrados = 'usuarios_cadastrados';
+  static const _keyPlano = 'plano_alimentar';
+
+  // ─── Sessão ────────────────────────────────────────────────────────────────
 
   Future<void> salvarSessao(UsuarioModel usuario) async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,6 +33,8 @@ class LocalStorageService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_keyUsuario);
   }
+
+  // ─── Usuários ──────────────────────────────────────────────────────────────
 
   Future<Map<String, dynamic>> _carregarUsuarios() async {
     final prefs = await SharedPreferences.getInstance();
@@ -81,6 +83,22 @@ class LocalStorageService {
     }
   }
 
+  /// Retorna todos os clientes cadastrados (excluindo o nutricionista fixo).
+  Future<List<UsuarioModel>> listarClientes() async {
+    final usuarios = await _carregarUsuarios();
+    final lista = <UsuarioModel>[];
+    for (final entry in usuarios.entries) {
+      final dados = entry.value as Map<String, dynamic>;
+      if (dados['tipo'] != 'nutricionista') {
+        lista.add(UsuarioModel.fromMap(dados, dados['uid'] as String));
+      }
+    }
+    lista.sort((a, b) => a.nome.compareTo(b.nome));
+    return lista;
+  }
+
+  // ─── Refeições ─────────────────────────────────────────────────────────────
+
   Future<List<RefeicaoModel>> carregarRefeicoes(String userId) async {
     final prefs = await SharedPreferences.getInstance();
     final json = prefs.getString('${_keyRefeicoes}_$userId');
@@ -98,6 +116,44 @@ class LocalStorageService {
     await prefs.setString(
       '${_keyRefeicoes}_${refeicao.userId}',
       jsonEncode(refeicoes.map((r) => r.toMap()).toList()),
+    );
+  }
+
+  /// Atualiza o comentário do nutricionista em uma refeição específica.
+  Future<void> atualizarComentarioRefeicao(
+    String userId,
+    String mealId,
+    String comentario,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final refeicoes = await carregarRefeicoes(userId);
+    final idx = refeicoes.indexWhere((r) => r.id == mealId);
+    if (idx == -1) return;
+    refeicoes[idx] = refeicoes[idx].copyWith(
+      comentarioNutricionista: comentario.trim(),
+    );
+    await prefs.setString(
+      '${_keyRefeicoes}_$userId',
+      jsonEncode(refeicoes.map((r) => r.toMap()).toList()),
+    );
+  }
+
+  // ─── Plano Alimentar ───────────────────────────────────────────────────────
+
+  Future<PlanoAlimentarModel?> carregarPlanoAlimentar(String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString('${_keyPlano}_$userId');
+    if (json == null) return null;
+    return PlanoAlimentarModel.fromMap(
+      jsonDecode(json) as Map<String, dynamic>,
+    );
+  }
+
+  Future<void> salvarPlanoAlimentar(PlanoAlimentarModel plano) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      '${_keyPlano}_${plano.userId}',
+      jsonEncode(plano.toMap()),
     );
   }
 }
