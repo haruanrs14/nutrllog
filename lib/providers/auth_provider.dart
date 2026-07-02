@@ -38,7 +38,6 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> login(String email, String senha) async {
     _setCarregando();
     try {
-      await _local.limparSessao();
       _usuarioAtual = await _authService.login(email, senha);
       await _local.salvarSessao(_usuarioAtual!);
       _status = AuthStatus.autenticado;
@@ -57,7 +56,6 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _setCarregando();
     try {
-      await _local.limparSessao();
       _usuarioAtual = await _authService.cadastrar(
         nome: nome,
         email: email,

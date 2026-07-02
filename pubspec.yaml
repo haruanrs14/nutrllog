@@ -14,7 +14,13 @@ dependencies:
   shared_preferences: ^2.3.2
   image_picker: ^1.1.2
   geolocator: ^13.0.1
+<<<<<<< HEAD
   intl: ^0.20.2
+=======
+
+  # Utilitários de data/localização
+  intl: ^0.19.0
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
 
 dev_dependencies:
   flutter_test:

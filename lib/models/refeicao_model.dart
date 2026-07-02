@@ -5,7 +5,11 @@ class RefeicaoModel {
   final TipoRefeicao tipo;
   final String descricao;
   final DateTime dataHora;
+<<<<<<< HEAD
   final String? fotoPath;
+=======
+  final String? fotoPath; // caminho local da foto
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
   final double? latitude;
   final double? longitude;
   final String? localizacaoNome;

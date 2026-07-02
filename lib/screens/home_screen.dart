@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // FIX: navegação real para cada aba
   void _onNavTap(int index) {
+<<<<<<< HEAD
     if (index == 0) {
       setState(() => _tabAtual = 0);
       return;
@@ -56,6 +57,20 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.of(context).pushNamed(AppRoutes.perfil).then((_) {
         setState(() => _tabAtual = 0);
       });
+=======
+    if (index == 1) {
+      // Registrar → abre câmera
+      Navigator.of(context).pushNamed(AppRoutes.registrar);
+      return;
+    }
+    setState(() => _tabAtual = index);
+    if (index == 2) {
+      Navigator.of(context).pushNamed(AppRoutes.historico);
+      return;
+    }
+    if (index == 3) {
+      Navigator.of(context).pushNamed(AppRoutes.perfil);
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
       return;
     }
   }
@@ -83,7 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+<<<<<<< HEAD
               // ── Cabeçalho ─────────────────────────────────────────────
+=======
+              // ── Header ────────────────────────────────────────────────
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -103,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+<<<<<<< HEAD
                   // FIX: avatar usa FileImage quando há foto local
                   GestureDetector(
                     onTap: () => Navigator.of(context)
@@ -117,11 +137,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           : null,
                       child: (usuario?.fotoPerfil == null ||
                               !File(usuario?.fotoPerfil ?? '').existsSync())
+=======
+                  // Avatar de perfil
+                  GestureDetector(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.perfil),
+                    child: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: const Color(0xFF4080FF),
+                      backgroundImage: usuario?.fotoPerfil != null
+                          ? NetworkImage(usuario!.fotoPerfil!)
+                          : null,
+                      child: usuario?.fotoPerfil == null
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
                           ? Text(
                               primeiroNome.isNotEmpty
                                   ? primeiroNome[0].toUpperCase()
                                   : '?',
                               style: const TextStyle(
+<<<<<<< HEAD
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16))
@@ -140,6 +174,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             .pushReplacementNamed(AppRoutes.login);
                       }
                     },
+=======
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                              ),
+                            )
+                          : null,
+                    ),
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
                   ),
                 ],
               ),
@@ -203,7 +246,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
+<<<<<<< HEAD
               // ── Refeições de hoje ─────────────────────────────────────
+=======
+              // ── Refeições ─────────────────────────────────────────────
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
               const SizedBox(height: 28),
               const Text('Refeições de hoje',
                   style: TextStyle(
@@ -229,6 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? 'Registrado · $horario'
                       : 'Pendente · Toque para registrar',
                   registrada: registrada,
+<<<<<<< HEAD
                   // FIX: onTap vai para Registrar passando o tipo pré-selecionado
                   onTap: registrada
                       ? () => _mostrarDetalheRefeicao(context, refeicao!)
@@ -243,6 +291,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .carregar(auth.usuarioAtual!.uid);
                             }
                           }),
+=======
+                  onTap: registrada
+                      ? null
+                      : () =>
+                          Navigator.of(context).pushNamed(AppRoutes.registrar),
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
                 );
               }),
 

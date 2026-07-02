@@ -6,7 +6,11 @@ class UsuarioModel {
   final String nome;
   final String email;
   final TipoUsuario tipo;
+<<<<<<< HEAD
   final String? fotoPerfil;
+=======
+  final String? fotoPerfil; // caminho local da foto de perfil
+>>>>>>> b9bb4d453ad986ded85dd560bd99a21fd56fac98
 
   UsuarioModel({
     required this.uid,
